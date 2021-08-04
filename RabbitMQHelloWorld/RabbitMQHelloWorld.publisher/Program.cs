@@ -3,10 +3,12 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace RabbitMQHelloWorld.publisher
 {
     //Publisher tarafı data gönderen taraftır
+    //Exchange kuyruk ile publisher arasında datanın kuyruklara dağılımını kontrol eden mekanizmadır
     class Program
     {
         static void Main(string[] args)
@@ -25,27 +27,31 @@ namespace RabbitMQHelloWorld.publisher
             //Bağlantı kanalı oluşturuldu
             var channel = connection.CreateModel();
 
-            //Mesaj iletimi için kuyruk oluşturduk
-            //Kuyruk daha önce oluşturulmuşsa hata vermez çalışmaya devam eder(parametreler aynı ise)
-            //ilk parametre kuyruk adı,ikinci parametre kuyruk saklansın mı
-            //üçünü parametre sadece bu kanal üzerinden mi kuyruğa bağlanılsın diye soruyor
-            //dördüncü kuyruğa bağlı olan subscriber ların hepsi silinirse kuyruk silinsin mi,
-            channel.QueueDeclare("hello-queue", true, false, false);
+            //Mesajlarımızı kuyruğa değil artık exchange oluşturup gönderiyoruz
+            //Fanout exchamge mesajları ona bağlı olan bütün kuyruklara gönderir
+            //ilk parametre exchange ismidir
+            //ikinci parametre exchange kayıt edilsin mi diye soruyor
+            //Exchange type belirlendi
+            channel.ExchangeDeclare("logs-fanout", durable: true, type: ExchangeType.Fanout);
 
             //For kullanımı gibi çalışır,çoklu data gönderimini test etmek için oluşturduk
             Enumerable.Range(1, 50).ToList().ForEach(data=> 
             {
                 //İletilecek ifade
-                string message = $"Message {data}";
+                string message = $"Log {data}";
 
                 //İletim byte şeklinde olduğu için byte a çevirdik
                 var messageBody = Encoding.UTF8.GetBytes(message);
 
-                //kuyruğa data ekleme
+                
                 //ilk parametre exchange ismi
-                //exchange miz olmadığı için kanalın da hangi kuyruğa mesajı ileteceğine karar verebilmesi için ikinci parametre de kuyruk ismi veriyoruz
+                //kuyruk ismi tanımlamadım benim exchange 'ime bağlanacak subscriber lar kendi kuyruklarını oluşturup exchange'yi dinlesinler.
+                //herhangi bir subscriber yokken mesajlarımı gönderirsem mesajlar haliyle bir kuyruğa iletilememiş olurlar.Fakat oluşturulan kuyruklar kayıt olacak şekilde oluşturulurlarsa subscriber dataları daha sonra da alabilirler tabi en başta kuyrukların oluşmuş olnası gerekiyor
                 //Son parametrede mesajımı veriyorum
-                channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
+                channel.BasicPublish("logs-fanout", string.Empty, null, messageBody);
+
+                //mesajlar exchange aktarılırken yavaş aktarılsın ve kuyruktan dinlerkende aktarımı görebilelim
+                Thread.Sleep(1000);
 
                 Console.WriteLine("Gönderilen Mesaj: "+message);
             });

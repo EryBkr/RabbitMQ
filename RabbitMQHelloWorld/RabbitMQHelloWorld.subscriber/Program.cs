@@ -6,6 +6,7 @@ using System.Text;
 namespace RabbitMQHelloWorld.subscriber
 {
     //Subscriber tarafı data alan taraftır
+    //Exchange kuyruk ile publisher arasında datanın kuyruklara dağılımını kontrol eden mekanizmadır
     class Program
     {
         static void Main(string[] args)
@@ -24,13 +25,21 @@ namespace RabbitMQHelloWorld.subscriber
             //Bağlantı kanalı oluşturuldu
             var channel = connection.CreateModel();
 
-            //Mesaj alımı için kuyruk oluşturduk
-            //Kuyruk daha önce oluşturulmuşsa hata vermez çalışmaya devam eder(parametreler aynı ise)
-            //publisher ve subscriber tarafında oluşturulan kuyrukların özellikleri aynı olmalıdır
-            //ilk parametre kuyruk adı,ikinci parametre kuyruk saklansın mı
-            //üçünü parametre sadece bu kanal üzerinden mi kuyruğa bağlanılsın diye soruyor
-            //dördüncü kuyruğa bağlı olan subscriber ların hepsi silinirse kuyruk silinsin mi,
-            channel.QueueDeclare("hello-queue", true, false, false);
+
+            //birden fazla instance olabileceği için rabbitmq tarafından bize sağlanan random kuyruk adımızı oluşturabiliriz.
+            var randomQueueName = "log-database-save-queue"; /*channel.QueueDeclare().QueueName;*/
+
+
+            //kuyruğun sürekli kalmasını istiyorsak exchange ye bağlanmadan önce declare etmemiz gerekiyor
+            //ikinci parametre kaydedilsin mi
+            //üçüncü parametre başka kanallardan kuyruğa bağlanılamaz mı diye soruyor
+            //dördüncü parametre otomatik silinsin mi diye soruyor son subscriber silinse dahi kuyruk silinmeyecektir
+            channel.QueueDeclare(randomQueueName, true, false, false);
+
+            //publisher tarafında exchange oluşturmuştuk bu tarafta ise ona bir kuyruk bağlayarak gelen mesajları dinlemek istiyorum.kuyruk oluşturmak demek exchange yok olsa dahi kuyruk var olmaya devam eder ama kuyruk bind ederek exchange in işi bittiği zaman kuyruğun otomatik silinmesini sağlıyorum
+            //ilk parametre kuyruk ismi
+            //ikinci parametre exchange ismi
+            channel.QueueBind(randomQueueName, "logs-fanout", "", null);
 
             //subscriber lara kaçar adet data göndereceğimizi belirliyoruz.
             //ilk parametrenin 0 olması herhangi bir boyutta ki mesajı alabiliriz demek
@@ -43,7 +52,10 @@ namespace RabbitMQHelloWorld.subscriber
             //ilk parametreye kuyruk ismi tanımladık
             //ikinci parametre iletim sonrası mesaj silinsin mi diye soruyor
             //ikinci parametreye false verdiysek eğer ileride rabbitmq ya mesajın silinmesi için haber verebiliriz
-            channel.BasicConsume("hello-queue", false, subscriber);
+            //kuyruk exchange yi dinlemeye başladıktan sonra publisher mesaj gönderdikçe alır tabi bu senaryo kuyruk kayıtlı değilse gerçekleşecektir kuyruk kaydedilecek şekilde oluşturulduysa subscriber kaldığı yerden ya da en başından dataları dinleyecektir.Senaryoya göre değişebilecek bir yapıdır.Tabi en başta kuyrukların oluşmuş olması gerekiyor
+            channel.BasicConsume(randomQueueName, false, subscriber);
+
+            Console.WriteLine("Loglar dinleniyor");
 
             //Eventi yakalıyoruz
             subscriber.Received += (object sender, BasicDeliverEventArgs e) =>
