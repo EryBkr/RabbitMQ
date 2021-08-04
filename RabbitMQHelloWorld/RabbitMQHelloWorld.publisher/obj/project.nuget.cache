@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "GkBsz+yg9Rwy0Y2nQ2jg5c9mleP8lrpBv/LciWl4yti9nryFIeZBw1BHbyrWklOIpbxI1SNi564GGmMwZ696KA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Blackerback\\OneDrive\\Masaüstü\\NetCoreRabbitMQ\\RabbitMQHelloWorld\\RabbitMQHelloWorld.publisher\\RabbitMQHelloWorld.publisher.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Blackerback\\.nuget\\packages\\rabbitmq.client\\6.2.2\\rabbitmq.client.6.2.2.nupkg.sha512",
+    "C:\\Users\\Blackerback\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Blackerback\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}
