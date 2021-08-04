@@ -15,7 +15,6 @@ namespace RabbitMQHelloWorld.publisher
         Info = 4
     }
 
-
     //Publisher tarafı data gönderen taraftır
     //Exchange kuyruk ile publisher arasında datanın kuyruklara dağılımını kontrol eden mekanizmadır
     class Program
@@ -37,47 +36,33 @@ namespace RabbitMQHelloWorld.publisher
             var channel = connection.CreateModel();
 
             //Mesajlarımızı kuyruğa değil artık exchange oluşturup gönderiyoruz
-            //Direct exchamge mesajları bizim belirlediğimiz kuyruklara özel olarak iletir
+            //Topic exchange detaylı route işlemi için kullanılır.Kuyruklar subscriber tarafında oluşturulacaktır
             //ilk parametre exchange ismidir
             //ikinci parametre exchange kayıt edilsin mi diye soruyor
             //Exchange type belirlendi
-            channel.ExchangeDeclare("logs-direct", durable: true, type: ExchangeType.Direct);
-
-            //Enum isimlerini foreach ile dönüyorum
-            Enum.GetNames(typeof(LogNames)).ToList().ForEach(logType =>
-            {
-                var queueName = $"direct-queue-{logType}";
-
-                var routeKey = $"route-{logType}";
-
-                //Bazı senaryolarda kuyruk subscriber tarafında oluşturulurdu fakat burada ki exchange tipimiz belirli bir kuyruğa bağlanacağı için burada oluşturma gereği duyduk
-                //Her Log tipi için kuyruk oluşturduk
-                channel.QueueDeclare(queueName, true, false, false);
-
-                //Kuyruk ile Exchange yi Bind ettik
-                //route key Exchange kuyruğa data gönderirken route key e göre gönderme işlemi yapacaktır.Bind ederken bunu da belirliyoruz
-                channel.QueueBind(queueName, "logs-direct", routeKey, null);
-            });
+            channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
 
             //For kullanımı gibi çalışır,çoklu data gönderimini test etmek için oluşturduk
-            Enumerable.Range(1, 15).ToList().ForEach(data =>
+            Enumerable.Range(1, 16).ToList().ForEach(data =>
             {
-                //Log tipini random olarak alıyorum
-                LogNames log = (LogNames)new Random().Next(1, 4);
+                //Topic Exchange regex gibi route key aramamızı sağlar
+                //Error.Critical.Info gibi bir route key e sahip olduğumuzu düşünelim *.Critical.* şeklinde ortasında Critical ibaresi barındıran route keylerle bağlanabiliriz
+                LogNames log1 = (LogNames)new Random().Next(1, 5);
+                LogNames log2 = (LogNames)new Random().Next(1, 5);
+                LogNames log3 = (LogNames)new Random().Next(1, 5);
+                var routeKey = $"{log1}.{log2}.{log3}";
 
-                //İletilecek ifade Exp:Log-type Critical
-                string message = $"Log-type {log}";
+                //İletilecek ifade Exp:Log-type Critical-Error-Info
+                string message = $"Log-type {log1}-{log2}-{log3}";
 
                 //İletim byte şeklinde olduğu için byte a çevirdik
                 var messageBody = Encoding.UTF8.GetBytes(message);
 
-                var routeKey = $"route-{log}";
-
                 //ilk parametre exchange ismi
                 //yukarıda kuyruklarımı ve route key lerimi oluşturdum.
-                //Direct Exchange kuyruklara data iletirken route keyden faydalanır ve o kuyruğa özel mesaj gönderir
+                //Topic Exchange kuyruklara data iletirken route keyden faydalanır ve o kuyruğa özel mesaj gönderir.Route Key araması yukarıda belirttiğim gibi gerçekleşir
                 //Son parametrede mesajımı veriyorum
-                channel.BasicPublish("logs-direct", routeKey, null, messageBody);
+                channel.BasicPublish("logs-topic", routeKey, null, messageBody);
 
                 //mesajlar exchange aktarılırken yavaş aktarılsın ve kuyruktan dinlerkende aktarımı görebilelim
                 Thread.Sleep(500);

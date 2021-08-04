@@ -34,11 +34,20 @@ namespace RabbitMQHelloWorld.subscriber
 
             var subscriber = new EventingBasicConsumer(channel);
 
+            //Random bir kuyruk ismi oluşturuyoruz
+            var queueName = channel.QueueDeclare().QueueName;
+
+            //Topic Exchange kullanma nedenimiz aslında burada başlıyor.Route Key i sanki regex gibi bir ifadeyle kullanabiliyormuşcasına bu şekilde yazabiliyoruz
+            var routeKey = "*.Error.*";
+
+            //Kuyruk deklere etmiyorum sadece bind ediyorum.Bağlı olduğu exchange kadar yaşam ömrü olacaktır
+            channel.QueueBind(queueName, "logs-topic", routeKey);
+
             //ilk parametreye kuyruk ismi tanımladık
             //ikinci parametre iletim sonrası mesaj silinsin mi diye soruyor
             //ikinci parametreye false verdiysek eğer ileride rabbitmq ya mesajın silinmesi için haber verebiliriz
             //kuyruk exchange yi dinlemeye başladıktan sonra publisher mesaj gönderdikçe alır tabi bu senaryo kuyruk kayıtlı değilse gerçekleşecektir kuyruk kaydedilecek şekilde oluşturulduysa subscriber kaldığı yerden ya da en başından dataları dinleyecektir.Senaryoya göre değişebilecek bir yapıdır.Tabi en başta kuyrukların oluşmuş olması gerekiyor
-            channel.BasicConsume("direct-queue-Error", false, subscriber);
+            channel.BasicConsume(queueName, false, subscriber);
 
             Console.WriteLine("Loglar dinleniyor");
 
