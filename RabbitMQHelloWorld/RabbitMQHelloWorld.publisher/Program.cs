@@ -1,20 +1,13 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 
 namespace RabbitMQHelloWorld.publisher
 {
-    public enum LogNames
-    {
-        Critical = 1,
-        Error = 2,
-        Warning = 3,
-        Info = 4
-    }
-
     //Publisher tarafı data gönderen taraftır
     //Exchange kuyruk ile publisher arasında datanın kuyruklara dağılımını kontrol eden mekanizmadır
     class Program
@@ -36,39 +29,24 @@ namespace RabbitMQHelloWorld.publisher
             var channel = connection.CreateModel();
 
             //Mesajlarımızı kuyruğa değil artık exchange oluşturup gönderiyoruz
-            //Topic exchange detaylı route işlemi için kullanılır.Kuyruklar subscriber tarafında oluşturulacaktır
+            //Header exchange detaylı route işlemi için kullanılır.Key Value şeklinde header aracılığıyla key belirlenir.Route Key kullanılmaz
             //ilk parametre exchange ismidir
             //ikinci parametre exchange kayıt edilsin mi diye soruyor
             //Exchange type belirlendi
-            channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
+            channel.ExchangeDeclare("header-exchange", durable: true, type: ExchangeType.Headers);
 
-            //For kullanımı gibi çalışır,çoklu data gönderimini test etmek için oluşturduk
-            Enumerable.Range(1, 16).ToList().ForEach(data =>
-            {
-                //Topic Exchange regex gibi route key aramamızı sağlar
-                //Error.Critical.Info gibi bir route key e sahip olduğumuzu düşünelim *.Critical.* şeklinde ortasında Critical ibaresi barındıran route keylerle bağlanabiliriz
-                LogNames log1 = (LogNames)new Random().Next(1, 5);
-                LogNames log2 = (LogNames)new Random().Next(1, 5);
-                LogNames log3 = (LogNames)new Random().Next(1, 5);
-                var routeKey = $"{log1}.{log2}.{log3}";
+            //Exchange Header bilgilerini oluşturdum
+            Dictionary<string, object> headers = new Dictionary<string, object>();
+            headers.Add("format", "pdf");
+            headers.Add("shape", "a4");
 
-                //İletilecek ifade Exp:Log-type Critical-Error-Info
-                string message = $"Log-type {log1}-{log2}-{log3}";
+            //Oluşturduğum header bilgilerini parametre olarak eklemek için paketledim
+            var properties = channel.CreateBasicProperties();
+            properties.Headers = headers;
 
-                //İletim byte şeklinde olduğu için byte a çevirdik
-                var messageBody = Encoding.UTF8.GetBytes(message);
-
-                //ilk parametre exchange ismi
-                //yukarıda kuyruklarımı ve route key lerimi oluşturdum.
-                //Topic Exchange kuyruklara data iletirken route keyden faydalanır ve o kuyruğa özel mesaj gönderir.Route Key araması yukarıda belirttiğim gibi gerçekleşir
-                //Son parametrede mesajımı veriyorum
-                channel.BasicPublish("logs-topic", routeKey, null, messageBody);
-
-                //mesajlar exchange aktarılırken yavaş aktarılsın ve kuyruktan dinlerkende aktarımı görebilelim
-                Thread.Sleep(500);
-
-                Console.WriteLine("Log Gönderilmiştir: " + message);
-            });
+            //Exchange , Mesaj ve header bilgileri eklendi
+            channel.BasicPublish("header-exchange", string.Empty, properties, Encoding.UTF8.GetBytes("Header mesajım"));
+         
 
             Console.ReadLine();
         }

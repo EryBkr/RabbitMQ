@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace RabbitMQHelloWorld.subscriber
@@ -37,11 +38,16 @@ namespace RabbitMQHelloWorld.subscriber
             //Random bir kuyruk ismi oluşturuyoruz
             var queueName = channel.QueueDeclare().QueueName;
 
-            //Topic Exchange kullanma nedenimiz aslında burada başlıyor.Route Key i sanki regex gibi bir ifadeyle kullanabiliyormuşcasına bu şekilde yazabiliyoruz
-            var routeKey = "*.Error.*";
+            //kuyruğun exchange bağlanabilmesi için doğru header bilgilerini de beraberinde göndermem gerekiyor
+            Dictionary<string, object> headers = new Dictionary<string, object>();
+            headers.Add("format", "pdf");
+            headers.Add("shape", "a4");
+            //x-match all bütün header ifadelerin eşit olması ,  x-match any ise bir tanesinin doğru olması yeter anlamına gelmektedir
+            headers.Add("x-match","all");
 
             //Kuyruk deklere etmiyorum sadece bind ediyorum.Bağlı olduğu exchange kadar yaşam ömrü olacaktır
-            channel.QueueBind(queueName, "logs-topic", routeKey);
+            //son parametre Header Exchange bağlantısı için gereklidir.Header eşleştirmesi yapacaktır
+            channel.QueueBind(queueName, "header-exchange", string.Empty,headers);
 
             //ilk parametreye kuyruk ismi tanımladık
             //ikinci parametre iletim sonrası mesaj silinsin mi diye soruyor
