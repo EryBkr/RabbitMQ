@@ -1,8 +1,10 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQHelloWorld.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace RabbitMQHelloWorld.subscriber
 {
@@ -62,7 +64,12 @@ namespace RabbitMQHelloWorld.subscriber
             {
                 //Mesaj byte array olarak gegldiği için çevrim işlemi yapıyoruz
                 var message = Encoding.UTF8.GetString(e.Body.ToArray());
-                Console.WriteLine("Gelen Mesaj : " + message);
+
+                //Gelen mesajı Deserilaize edip ekrana yazdırıyoruz
+                Product product = JsonSerializer.Deserialize<Product>(message);
+
+
+                Console.WriteLine($"{product.Id}  {product.Name} {product.Price}");
 
                 //mesajın iletildikten sonra silinmemesini seçtiysek bu kısımda artık mesajımızı silebiliriz
                 //e.delivertag mesaj bilgisini alıyor,ikinci parametre ise işlenmiş ama rabbitmq ya gitmemiş mesajlar da dahil edilsin mi diye soruyor

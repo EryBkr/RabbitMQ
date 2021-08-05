@@ -15,4 +15,6 @@ C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\Rabb
 C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\obj\Debug\net5.0\ref\RabbitMQHelloWorld.subscriber.dll
 C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\obj\Debug\net5.0\RabbitMQHelloWorld.subscriber.pdb
 C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\obj\Debug\net5.0\RabbitMQHelloWorld.subscriber.genruntimeconfig.cache
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\bin\Debug\net5.0\RabbitMQHelloWorld.Shared.dll
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\bin\Debug\net5.0\RabbitMQHelloWorld.Shared.pdb
 C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\RabbitMQHelloWorld\RabbitMQHelloWorld.subscriber\obj\Debug\net5.0\RabbitMQHelloWorld.subscriber.csproj.AssemblyReference.cache

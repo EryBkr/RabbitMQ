@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6mjpc5P1KtLgdBQE4H7xpnSFz0fqbY3Z6xzq50UtPFB0WjAZ+HrijrXkE7OxSDXUH/YL381SovWNYowVMciVSQ==",
+  "dgSpecHash": "7fVx88LUThkiiTF6Y1KeYorC6e/0QwDls8DcOpDs7KeEfnMcBihcTqcdJP3GCKsSkmUsITu6uUozIoUnFfXgZQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Blackerback\\OneDrive\\Masaüstü\\NetCoreRabbitMQ\\RabbitMQHelloWorld\\RabbitMQHelloWorld.subscriber\\RabbitMQHelloWorld.subscriber.csproj",
   "expectedPackageFiles": [

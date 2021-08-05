@@ -1,9 +1,11 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQHelloWorld.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 
 namespace RabbitMQHelloWorld.publisher
@@ -44,9 +46,19 @@ namespace RabbitMQHelloWorld.publisher
             var properties = channel.CreateBasicProperties();
             properties.Headers = headers;
 
-            //Exchange , Mesaj ve header bilgileri eklendi
-            channel.BasicPublish("header-exchange", string.Empty, properties, Encoding.UTF8.GetBytes("Header mesajım"));
-         
+            //Mesajların kalıcı hale gelmesi için ekledik.Exchange tiplerine bağlı bir özellik değildir
+            properties.Persistent = true;
+
+            //Complex type'ı oluşturdum
+            var product = new Product { Id = 1, Name = "Silgi", Price = 15 };
+
+            //Product objemizi json a çevirdik
+            var productJsonString = JsonSerializer.Serialize(product);
+
+
+            //Exchange , complex type ve header bilgileri eklendi
+            channel.BasicPublish("header-exchange", string.Empty, properties, Encoding.UTF8.GetBytes(productJsonString));
+
 
             Console.ReadLine();
         }

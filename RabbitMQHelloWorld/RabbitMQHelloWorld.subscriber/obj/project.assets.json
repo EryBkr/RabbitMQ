@@ -32,6 +32,16 @@
         "runtime": {
           "lib/netcoreapp3.0/System.Threading.Channels.dll": {}
         }
+      },
+      "RabbitMQHelloWorld.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/RabbitMQHelloWorld.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RabbitMQHelloWorld.Shared.dll": {}
+        }
       }
     }
   },
@@ -101,11 +111,17 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "RabbitMQHelloWorld.Shared/1.0.0": {
+      "type": "project",
+      "path": "../RabbitMQHelloWorld.Shared/RabbitMQHelloWorld.Shared.csproj",
+      "msbuildProject": "../RabbitMQHelloWorld.Shared/RabbitMQHelloWorld.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "RabbitMQ.Client >= 6.2.2"
+      "RabbitMQ.Client >= 6.2.2",
+      "RabbitMQHelloWorld.Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -141,7 +157,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Blackerback\\OneDrive\\Masaüstü\\NetCoreRabbitMQ\\RabbitMQHelloWorld\\RabbitMQHelloWorld.Shared\\RabbitMQHelloWorld.Shared.csproj": {
+              "projectPath": "C:\\Users\\Blackerback\\OneDrive\\Masaüstü\\NetCoreRabbitMQ\\RabbitMQHelloWorld\\RabbitMQHelloWorld.Shared\\RabbitMQHelloWorld.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
