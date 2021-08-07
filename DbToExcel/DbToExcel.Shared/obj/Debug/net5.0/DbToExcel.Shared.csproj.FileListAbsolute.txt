@@ -1,0 +1,11 @@
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\bin\Debug\net5.0\DbToExcel.Shared.deps.json
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\bin\Debug\net5.0\DbToExcel.Shared.dll
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\bin\Debug\net5.0\ref\DbToExcel.Shared.dll
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\bin\Debug\net5.0\DbToExcel.Shared.pdb
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.AssemblyInfoInputs.cache
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.AssemblyInfo.cs
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.dll
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\ref\DbToExcel.Shared.dll
+C:\Users\Blackerback\OneDrive\Masaüstü\NetCoreRabbitMQ\DbToExcel\DbToExcel.Shared\obj\Debug\net5.0\DbToExcel.Shared.pdb

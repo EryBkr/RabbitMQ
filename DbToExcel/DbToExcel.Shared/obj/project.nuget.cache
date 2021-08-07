@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "zToWo9nYX+qtNgaIy4ntqDbLocaGaRKui8UiOpKcSTzep0MOWOPemRvwgrjtuCOvc8em7J+WL0Bg/ycoix9iJw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Blackerback\\OneDrive\\Masaüstü\\NetCoreRabbitMQ\\DbToExcel\\DbToExcel.Shared\\DbToExcel.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Blackerback\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.8\\microsoft.aspnetcore.http.features.5.0.8.nupkg.sha512",
+    "C:\\Users\\Blackerback\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\Blackerback\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
